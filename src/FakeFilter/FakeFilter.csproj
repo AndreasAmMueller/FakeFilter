@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Configurations>Debug;Release;DebugLocal</Configurations>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+
+    <AssemblyName>AMWD.Net.Api.FakeFilter</AssemblyName>
+    <RootNamespace>AMWD.Net.Api.FakeFilter</RootNamespace>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageId>AMWD.Net.Api.FakeFilter</PackageId>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <Product>FakeFilter API</Product>
+    <Description>Implementation to access the FakeFilter API.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITLAB_CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(GITLAB_CI)' == 'true'">
+    <SourceLinkGitLabHost Include="git.am-wd.de" Version="$(CI_SERVER_VERSION)" />
+    <PackageReference Include="Microsoft.SourceLink.GitLab" Version="1.1.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../icon.png" Pack="true" PackagePath="/" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Unclassified.NetRevisionTask" Version="0.4.3" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

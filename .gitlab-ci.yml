@@ -1,0 +1,113 @@
+# The image has to use the same version as the .NET UnitTest project
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+variables:
+  TZ: "Europe/Berlin"
+  LANG: "de"
+
+stages:
+  - build
+  - test
+  - deploy
+
+debug-build:
+  stage: build
+  tags:
+    - docker
+  except:
+    - tags
+  script:
+    - dotnet restore --no-cache --force
+    - dotnet build -c Debug --nologo --no-restore --no-incremental
+    - mkdir ./artifacts
+    - mv ./src/FakeFilter/bin/Debug/*.nupkg ./artifacts/
+    - mv ./src/FakeFilter/bin/Debug/*.snupkg ./artifacts/
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 day
+
+debug-test:
+  stage: test
+  dependencies:
+    - debug-build
+  tags:
+    - docker
+  except:
+    - tags
+  # branch-coverage
+  coverage: '/Total[^|]*\|[^|]*\|\s*([0-9.%]+)/'
+  # line-coverage
+  # coverage: '/Total[^|]*\|\s*([0-9.%]+)/'
+  script:
+    - dotnet restore --no-cache --force
+    - dotnet test -c Debug --nologo --no-restore
+
+
+debug-deploy:
+  stage: deploy
+  dependencies:
+    - debug-build
+    - debug-test
+  tags:
+    - docker
+  except:
+    - tags
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg
+
+
+release-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - amd64
+  only:
+    - tags
+  script:
+    - dotnet restore --no-cache --force
+    - dotnet build -c Release --nologo --no-restore --no-incremental
+    - mkdir ./artifacts
+    - mv ./src/FakeFilter/bin/Release/*.nupkg ./artifacts/
+    - mv ./src/FakeFilter/bin/Release/*.snupkg ./artifacts/
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 day
+
+release-test:
+  stage: test
+  dependencies:
+    - release-build
+  tags:
+    - docker
+    - lnx
+    - amd64
+  only:
+    - tags
+  # branch-coverage
+  # coverage: '/Total[^|]*\|[^|]*\|\s*([0-9.%]+)/'
+  # line-coverage
+  coverage: '/Total[^|]*\|\s*([0-9.%]+)/'
+  script:
+    - dotnet restore --no-cache --force
+    - dotnet test -c Release --nologo --no-restore
+
+
+release-deploy:
+  stage: deploy
+  dependencies:
+    - release-build
+    - release-test
+  tags:
+    - docker
+    - lnx
+    - amd64
+  only:
+    - tags
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg
+    - dotnet nuget push -k $NUGET_APIKEY -s https://api.nuget.org/v3/index.json --skip-duplicate artifacts/*.nupkg

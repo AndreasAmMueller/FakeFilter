@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "t": 1679563230,
+  "domains": {
+    "foo.bar": {
+      "providers": [
+        "fakemail.net"
+      ],
+      "hosts": {
+        "foo.bar": {
+          "firstseen": 1679476830,
+          "lastseen": 1679304030
+        }
+      }
+    },
+    "foo.baz": {
+      "providers": [
+        "fakemail.net"
+      ],
+      "hosts": {
+        "foo.baz": {
+          "firstseen": 1679476830,
+          "lastseen": 1679304030
+        }
+      }
+    },
+    "hello.world": {
+      "providers": [
+        "fakemail.net",
+        "github.com",
+        "gitlab.com"
+      ],
+      "hosts": {
+        "hello.world": {
+          "firstseen": 1679476830,
+          "lastseen": 1679304030
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<Project>
+  <Target Condition="'$(Configuration)' == 'DebugLocal'" Name="CopyPackageToLocal" AfterTargets="Pack">
+    <Delete Files="D:\NuGetLocal\$(PackageId).$(PackageVersion).nupkg" />
+    <Delete Files="D:\NuGetLocal\$(PackageId).$(PackageVersion).snupkg" />
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="D:\NuGetLocal" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(PackageId).$(PackageVersion).snupkg" DestinationFolder="D:\NuGetLocal" />
+  </Target>
+</Project>

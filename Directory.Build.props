@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <NrtRevisionFormat>{semvertag:main}{!:-mod}</NrtRevisionFormat>
+
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
+
+    <PackageProjectUrl>https://fakefilter.net/static/docs/restful/</PackageProjectUrl>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/AndreasAmMueller/FakeFilter</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <Company>AM.WD</Company>
+    <Authors>Andreas Müller</Authors>
+    <Copyright>© {copyright:2023-} AM.WD</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+</Project>
