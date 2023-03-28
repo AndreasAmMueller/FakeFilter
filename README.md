@@ -119,5 +119,5 @@ FakeFilterResponse : object
 ## Sources/Docs
 
 - [FakeFilter Docs](https://fakefilter.net/static/docs/restful/)
-- [Github Repository](https://github.com/7c/fakefilter)
+- [GitHub Repository](https://github.com/7c/fakefilter)
 - [MIT License](https://licenses.nuget.org/MIT)
