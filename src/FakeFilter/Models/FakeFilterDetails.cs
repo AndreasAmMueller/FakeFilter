@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("FakeFilter.Tests")]
+
 namespace AMWD.Net.Api.FakeFilter.Models
 {
 	/// <summary>

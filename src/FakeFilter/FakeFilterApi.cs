@@ -36,7 +36,6 @@ namespace AMWD.Net.Api.FakeFilter
 		public FakeFilterApi()
 			: this(@"https://fakefilter.net/api")
 		{
-			httpClient = new HttpClient();
 		}
 
 		/// <summary>
@@ -51,10 +50,11 @@ namespace AMWD.Net.Api.FakeFilter
 				throw new ArgumentNullException(nameof(apiUrl));
 
 			url = apiUrl.Trim().TrimEnd('/').Trim();
+			httpClient = new HttpClient();
 		}
 
 		/// <inheritdoc />
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			if (isDisposed)
 				return;
