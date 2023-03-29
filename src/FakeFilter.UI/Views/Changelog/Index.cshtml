@@ -1,0 +1,122 @@
+﻿@using FakeFilter.UI.Enums
+@model List<Changelog>
+
+<div class="my-5 text-center">
+	<h1 class="display-3"><span class="fa-solid fa-scroll"></span> Changelog</h1>
+
+	<p class="lead mb-5">
+		Changes of domains and providers over time.
+	</p>
+</div>
+<div class="divider"></div>
+
+
+@foreach (var changelog in Model.OrderByDescending(c => c.Timestamp))
+{
+	int hostAddedCount = changelog.Entries.Count(e => e.Type == ChangelogEntryType.Host && e.Action == ChangelogEntryAction.Added);
+	int hostDeletedCount = changelog.Entries.Count(e => e.Type == ChangelogEntryType.Host && e.Action == ChangelogEntryAction.Deleted);
+	int providerAddedCount = changelog.Entries.Count(e => e.Type == ChangelogEntryType.Provider && e.Action == ChangelogEntryAction.Added);
+	int providerDeletedCount = changelog.Entries.Count(e => e.Type == ChangelogEntryType.Provider && e.Action == ChangelogEntryAction.Deleted);
+
+	<div class="my-5">
+		<h1>@(changelog.Timestamp.ToString("yyyy-MM-dd HH:mm"))</h1>
+
+		<div class="table-responsive mb-3">
+			<table class="table">
+				<thead>
+					<tr>
+						<td colspan="2">
+							<h2>Hosts</h2>
+						</td>
+					</tr>
+					<tr>
+						<th scope="col" class="text-success">Added</th>
+						<th scope="col" class="text-danger">Removed</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for (int i = 0; i < (int)Math.Max(hostAddedCount, hostDeletedCount); i++)
+					{
+						var addedHost = changelog.Entries
+							.Where(e => e.Type == ChangelogEntryType.Host)
+							.Where(e => e.Action == ChangelogEntryAction.Added)
+							.OrderBy(e => e.Domain)
+							.Skip(i)
+							.FirstOrDefault();
+						var deletedHost = changelog.Entries
+							.Where(e => e.Type == ChangelogEntryType.Host)
+							.Where(e => e.Action == ChangelogEntryAction.Deleted)
+							.OrderBy(e => e.Domain)
+							.Skip(i)
+							.FirstOrDefault();
+
+						<tr>
+							<td>
+								@if (addedHost != null)
+								{
+									<span class="text-success fa-solid fa-fw fa-square-plus"></span> @addedHost.Domain
+								}
+							</td>
+							<td>
+								@if (deletedHost != null)
+								{
+									<span class="text-danger fa-solid fa-fw fa-square-minus"></span> @deletedHost.Domain
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<td colspan="2">
+							<h2>Providers</h2>
+						</td>
+					</tr>
+					<tr>
+						<th scope="col" class="text-success">Added</th>
+						<th scope="col" class="text-danger">Removed</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for (int i = 0; i < (int)Math.Max(providerAddedCount, providerDeletedCount); i++)
+					{
+						var addedProvider = changelog.Entries
+							.Where(e => e.Type == ChangelogEntryType.Provider)
+							.Where(e => e.Action == ChangelogEntryAction.Added)
+							.OrderBy(e => e.Domain)
+							.Skip(i)
+							.FirstOrDefault();
+						var deletedProvider = changelog.Entries
+							.Where(e => e.Type == ChangelogEntryType.Provider)
+							.Where(e => e.Action == ChangelogEntryAction.Deleted)
+							.OrderBy(e => e.Domain)
+							.Skip(i)
+							.FirstOrDefault();
+
+						<tr>
+							<td>
+								@if (addedProvider != null)
+								{
+									<span class="text-success fa-solid fa-fw fa-circle-plus"></span> @addedProvider.Domain
+								}
+							</td>
+							<td>
+								@if (deletedProvider != null)
+								{
+									<span class="text-danger fa-solid fa-fw fa-circle-minus"></span> @deletedProvider.Domain
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="divider"></div>
+}

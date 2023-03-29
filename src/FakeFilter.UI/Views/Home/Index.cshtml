@@ -1,0 +1,54 @@
+﻿@{
+	var (tokenName, tokenValue) = Context.GetAntiforgeryToken();
+}
+
+<div class="text-center">
+	<h1 class="display-3"><span class="fa-solid fa-search"></span> Search</h1>
+
+	<p class="lead mb-5">
+		Use the input box below to search a domain or email address to find out if it's being misused for pranks.
+	</p>
+
+	<div class="input-group mb-5">
+		<input type="text" class="form-control" placeholder="domain or email address" id="search-input" />
+		<button type="button" class="btn btn-outline-secondary" id="search-button">Search</button>
+	</div>
+
+	<div class="table-responsive mb-3">
+		<table class="table text-start">
+			<tbody>
+				<tr>
+					<th scope="row">Request</th>
+					<td id="out-request"></td>
+				</tr>
+				<tr>
+					<th scope="row">Is used for fake</th>
+					<td id="out-isFake"></td>
+				</tr>
+				<tr>
+					<th scope="row">Provided by</th>
+					<td id="out-providers"></td>
+				</tr>
+				<tr>
+					<th scope="row">Error</th>
+					<td id="out-error"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+@section Scripts {
+	<script type="text/javascript">
+		window.FakeFilter = {
+			searchUrl: '@Url.Action("Search", "Home")',
+			token: {
+				name: '@tokenName',
+				value: '@tokenValue'
+			}
+		};
+	</script>
+
+
+	<script type="text/javascript" src="~/js/search.js" asp-append-version="true"></script>
+}

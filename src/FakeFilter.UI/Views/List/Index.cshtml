@@ -1,0 +1,29 @@
+﻿@model Dictionary<string, string[]>
+
+<div class="text-center">
+	<h1 class="display-3"><span class="fa-solid fa-list"></span> Domainlist</h1>
+
+	<p class="lead mb-5">
+		Listing of all known Domains and their providers.
+	</p>
+
+	<div class="table-responsive mb-3">
+		<table class="table text-start">
+			<thead>
+				<tr>
+					<th scope="col">Domain</th>
+					<th scope="col">Providers</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var kvp in Model)
+				{
+					<tr>
+						<td>@kvp.Key</td>
+						<td>@(string.Join(", ", kvp.Value))</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

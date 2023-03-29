@@ -1,0 +1,36 @@
+[Hosting]
+Address = 127.0.0.1
+Port    = 5000
+
+PersistentDataDirectory = data
+
+[Database]
+; Possible providers: InMemory, SQLite, SQLServer, PosgreSQL
+Provider = SQLite
+Host     =
+Port     =
+Name     = fakefilter
+Schema   = public
+Username =
+Password =
+File     = FakeFilter.sqlite
+
+[FakeFilter]
+API  = https://fakefilter.net/api
+Data = https://raw.githubusercontent.com/7c/fakefilter/main/json/data_version2.json
+
+[Serilog]
+MinimumLevel:Default            = Verbose
+MinimumLevel:Override:Microsoft = Warning
+MinimumLevel:Override:Microsoft.Hosting.Lifetime = Information
+MinimumLevel:Override:System    = Error
+Enrich:0 = FromLogContext
+
+WriteTo:0:Name                          = Console
+WriteTo:0:Args:outputTemplate           = [{Timestamp:yyyy-MM-dd HH:mm:ss}] {Level:u3}: {Message:lj}{NewLine}
+WriteTo:0:Args:restrictedToMinimumLevel = Information
+
+WriteTo:1:Name                          = SQLite
+WriteTo:1:Args:sqliteDbPath             = data/FakeFilter.Logs.sqlite
+WriteTo:1:Args:storeTimestampInUtc      = true
+WriteTo:1:Args:restrictedToMinimumLevel = Warning
