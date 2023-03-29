@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <NrtRevisionFormat>{semvertag:main}{!:-mod}</NrtRevisionFormat>
+    <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
 
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>

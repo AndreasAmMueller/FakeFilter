@@ -5,10 +5,12 @@ variables:
   TZ: "Europe/Berlin"
   LANG: "de"
 
+
 stages:
   - build
   - test
   - deploy
+
 
 debug-build:
   stage: build
@@ -27,7 +29,7 @@ debug-build:
     paths:
       - artifacts/*.nupkg
       - artifacts/*.snupkg
-    expire_in: 1 day
+    expire_in: 7 days
 
 debug-test:
   stage: test
@@ -40,25 +42,9 @@ debug-test:
     - tags
   # branch-coverage
   coverage: '/Total[^|]*\|[^|]*\|\s*([0-9.%]+)/'
-  # line-coverage
-  # coverage: '/Total[^|]*\|\s*([0-9.%]+)/'
   script:
     - dotnet restore --no-cache --force
     - dotnet test -c Debug --nologo --no-restore
-
-
-debug-deploy:
-  stage: deploy
-  dependencies:
-    - debug-build
-    - debug-test
-  tags:
-    - docker
-    - lnx
-  except:
-    - tags
-  script:
-    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg
 
 
 release-build:
@@ -91,8 +77,6 @@ release-test:
     - amd64
   only:
     - tags
-  # branch-coverage
-  # coverage: '/Total[^|]*\|[^|]*\|\s*([0-9.%]+)/'
   # line-coverage
   coverage: '/Total[^|]*\|\s*([0-9.%]+)/'
   script:
