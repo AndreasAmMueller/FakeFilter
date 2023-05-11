@@ -81,8 +81,8 @@ namespace FakeFilter.UI.Services
 					.OrderByDescending(e => e.Timestamp)
 					.FirstOrDefaultAsync(stopCts.Token);
 
-				var lastChange = changelogEntry?.Timestamp ?? DateTime.MinValue;
-				var timestamp = fakeFilterService.LastUpdatedAt.Value;
+				var lastChange = (changelogEntry?.Timestamp ?? DateTime.MinValue).AsUtc();
+				var timestamp = fakeFilterService.LastUpdatedAt.Value.AsUtc();
 				if (timestamp <= lastChange)
 				{
 					logger.LogInformation("No changes for 'offline' data");
@@ -229,14 +229,19 @@ namespace FakeFilter.UI.Services
 						await dbTransaction.CommitAsync(stopCts.Token);
 					}
 
+					int hostsAdded = changelog.Entries.Where(e => e.Type == ChangelogEntryType.Host).Where(e => e.Action == ChangelogEntryAction.Added).Count();
+					int hostsRemoved = changelog.Entries.Where(e => e.Type == ChangelogEntryType.Host).Where(e => e.Action == ChangelogEntryAction.Deleted).Count();
+					int providersAdded = changelog.Entries.Where(e => e.Type == ChangelogEntryType.Provider).Where(e => e.Action == ChangelogEntryAction.Added).Count();
+					int providersRemoved = changelog.Entries.Where(e => e.Type == ChangelogEntryType.Provider).Where(e => e.Action == ChangelogEntryAction.Deleted).Count();
+
 					logger.LogInformation(@$"Updated 'offline' data:
   Duration: {changelog.Duration.ToShortString()}
   Added
-    {changelog.Entries.Where(e => e.Type == ChangelogEntryType.Host).Where(e => e.Action == ChangelogEntryAction.Added).Count()} Hosts
-     {changelog.Entries.Where(e => e.Type == ChangelogEntryType.Provider).Where(e => e.Action == ChangelogEntryAction.Added).Count()} Providers
+    {hostsAdded,3} Hosts
+    {providersAdded,3} Providers
   Removed
-    {changelog.Entries.Where(e => e.Type == ChangelogEntryType.Host).Where(e => e.Action == ChangelogEntryAction.Deleted).Count()} Hosts
-    {changelog.Entries.Where(e => e.Type == ChangelogEntryType.Provider).Where(e => e.Action == ChangelogEntryAction.Deleted).Count()} Providers");
+    {hostsRemoved,3} Hosts
+    {providersRemoved,3} Providers");
 				}
 			}
 			catch (Exception ex)

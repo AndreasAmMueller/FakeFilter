@@ -19,7 +19,7 @@
 	int providerDeletedCount = changelog.Entries.Count(e => e.Type == ChangelogEntryType.Provider && e.Action == ChangelogEntryAction.Deleted);
 
 	<div class="my-5">
-		<h1>@(changelog.Timestamp.ToString("yyyy-MM-dd HH:mm"))</h1>
+		<h1>@(changelog.Timestamp.ToString("yyyy-MM-dd HH:mm")) UTC</h1>
 
 		<div class="table-responsive mb-3">
 			<table class="table">
