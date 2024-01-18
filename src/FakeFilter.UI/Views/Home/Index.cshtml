@@ -1,5 +1,5 @@
 ﻿@{
-	var (tokenName, tokenValue) = Context.GetAntiforgeryToken();
+	var (formName, headerName, value) = Context.GetAntiforgeryToken();
 }
 
 <div class="text-center">
@@ -43,8 +43,8 @@
 		window.FakeFilter = {
 			searchUrl: '@Url.Action("Search", "Home")',
 			token: {
-				name: '@tokenName',
-				value: '@tokenValue'
+				name: '@(formName)',
+				value: '@(value)'
 			}
 		};
 	</script>

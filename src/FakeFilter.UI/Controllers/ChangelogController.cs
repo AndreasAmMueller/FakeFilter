@@ -100,7 +100,7 @@ namespace FakeFilter.UI.Controllers
 					{
 						sb.AppendLine($"-- Add \"{entry.Domain}\" ({changelogs[entry.ChangelogId]:yyyy-MM-dd})");
 						sb.AppendLine("INSERT INTO [blocked_email_address] ([address], [creation_date] , [note])");
-						sb.AppendLine($"	SELECT '@{entry.Domain}', GETDATE(), 'fakefilter.net'");
+						sb.AppendLine($"	SELECT '@{entry.Domain}', '{changelogs[entry.ChangelogId]:yyyy-MM-dd} 00:00:00', 'fakefilter.net'");
 						sb.AppendLine($"WHERE NOT EXISTS (SELECT 1 FROM [blocked_email_address] WHERE [address] = '@{entry.Domain}')");
 						sb.AppendLine("GO");
 						sb.AppendLine();

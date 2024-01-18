@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AMWD.Common.Moq;
+using AMWD.Common.Test;
 using AMWD.Net.Api.FakeFilter.Models;
 using Moq;
 using Newtonsoft.Json;

@@ -1,0 +1,27 @@
+﻿{
+  "profiles": {
+    "production": {
+      "isDefault": true,
+      "hostName": "<remote host>",
+      "userName": "<remote user>",
+      "keyFileName": "path/to/ssh.key",
+      "localPath": "../bin/Release/publish",
+      "remotePath": "/path/on/remote",
+      "ignoredLocalFiles": [
+        "*.exe",
+        "libman.json"
+      ],
+      "ignoredRemoteFiles": [
+        "data/**"
+      ],
+      "commands": {
+        "preInstall": [
+          "<stop running processes>"
+        ],
+        "postInstall": [
+          "<restart processes>"
+        ]
+      }
+    }
+  }
+}
